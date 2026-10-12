@@ -1,0 +1,402 @@
+[
+  {
+    "id": 1,
+    "question": "Find all products costing less than 1000.",
+    "expected_sql": "SELECT name FROM products WHERE price < 1000 ORDER BY product_id",
+    "category": "filtering",
+    "difficulty": "easy",
+    "order_matters": false
+  },
+  {
+    "id": 2,
+    "question": "List all products in the Electronics category.",
+    "expected_sql": "SELECT name FROM products WHERE category = 'Electronics' ORDER BY product_id",
+    "category": "filtering",
+    "difficulty": "easy",
+    "order_matters": false
+  },
+  {
+    "id": 3,
+    "question": "Find the most expensive product.",
+    "expected_sql": "SELECT name FROM products ORDER BY price DESC, product_id LIMIT 1",
+    "category": "sorting",
+    "difficulty": "easy",
+    "order_matters": true
+  },
+  {
+    "id": 4,
+    "question": "Count all products in the store.",
+    "expected_sql": "SELECT COUNT(*) FROM products",
+    "category": "aggregation",
+    "difficulty": "easy",
+    "order_matters": false
+  },
+  {
+    "id": 5,
+    "question": "Find the average price of all products.",
+    "expected_sql": "SELECT AVG(price) FROM products",
+    "category": "aggregation",
+    "difficulty": "easy",
+    "order_matters": false
+  },
+  {
+    "id": 6,
+    "question": "Find products with fewer than 30 items in stock.",
+    "expected_sql": "SELECT name FROM products WHERE stock < 30 ORDER BY product_id",
+    "category": "filtering",
+    "difficulty": "easy",
+    "order_matters": false
+  },
+  {
+    "id": 7,
+    "question": "List customers who live in Mumbai.",
+    "expected_sql": "SELECT name FROM customers WHERE city = 'Mumbai' ORDER BY customer_id",
+    "category": "filtering",
+    "difficulty": "easy",
+    "order_matters": false
+  },
+  {
+    "id": 8,
+    "question": "Show each order ID with the name of the customer who placed it.",
+    "expected_sql": "SELECT orders.order_id, customers.name FROM orders JOIN customers ON orders.customer_id = customers.customer_id ORDER BY orders.order_id",
+    "category": "joins",
+    "difficulty": "medium",
+    "order_matters": false
+  },
+  {
+    "id": 9,
+    "question": "Find the total quantity ordered for each product, including products never ordered.",
+    "expected_sql": "SELECT products.name, COALESCE(SUM(order_items.quantity), 0) FROM products LEFT JOIN order_items ON products.product_id = order_items.product_id GROUP BY products.product_id, products.name ORDER BY products.product_id",
+    "category": "joins",
+    "difficulty": "medium",
+    "order_matters": true
+  },
+  {
+    "id": 10,
+    "question": "Find the total value of items in each order.",
+    "expected_sql": "SELECT order_id, SUM(quantity * unit_price) FROM order_items GROUP BY order_id ORDER BY order_id",
+    "category": "aggregation",
+    "difficulty": "medium",
+    "order_matters": false
+  },
+  {
+    "id": 11,
+    "question": "List products priced between 500 and 2000 inclusive.",
+    "expected_sql": "SELECT name, price FROM products WHERE price BETWEEN 500 AND 2000 ORDER BY price, product_id",
+    "category": "filtering",
+    "difficulty": "easy",
+    "order_matters": false
+  },
+  {
+    "id": 12,
+    "question": "List products that have at least 30 items in stock.",
+    "expected_sql": "SELECT name, stock FROM products WHERE stock >= 30 ORDER BY product_id",
+    "category": "filtering",
+    "difficulty": "easy",
+    "order_matters": false
+  },
+  {
+    "id": 13,
+    "question": "Show all products from cheapest to most expensive.",
+    "expected_sql": "SELECT name, price FROM products ORDER BY price, product_id",
+    "category": "sorting",
+    "difficulty": "easy",
+    "order_matters": true
+  },
+  {
+    "id": 14,
+    "question": "Find the three cheapest products.",
+    "expected_sql": "SELECT name, price FROM products ORDER BY price, product_id LIMIT 3",
+    "category": "sorting",
+    "difficulty": "medium",
+    "order_matters": true
+  },
+  {
+    "id": 15,
+    "question": "Find the total number of products in each category.",
+    "expected_sql": "SELECT category, COUNT(*) FROM products GROUP BY category ORDER BY category",
+    "category": "aggregation",
+    "difficulty": "medium",
+    "order_matters": false
+  },
+  {
+    "id": 16,
+    "question": "Find the average product price in each category.",
+    "expected_sql": "SELECT category, AVG(price) FROM products GROUP BY category ORDER BY category",
+    "category": "aggregation",
+    "difficulty": "medium",
+    "order_matters": false
+  },
+  {
+    "id": 17,
+    "question": "Find the highest-priced product in each category.",
+    "expected_sql": "SELECT category, MAX(price) FROM products GROUP BY category ORDER BY category",
+    "category": "aggregation",
+    "difficulty": "medium",
+    "order_matters": false
+  },
+  {
+    "id": 18,
+    "question": "Find categories that contain more than one product.",
+    "expected_sql": "SELECT category FROM products GROUP BY category HAVING COUNT(*) > 1 ORDER BY category",
+    "category": "aggregation",
+    "difficulty": "medium",
+    "order_matters": false
+  },
+  {
+    "id": 19,
+    "question": "List all orders that have been delivered.",
+    "expected_sql": "SELECT order_id FROM orders WHERE status = 'delivered' ORDER BY order_id",
+    "category": "filtering",
+    "difficulty": "easy",
+    "order_matters": false
+  },
+  {
+    "id": 20,
+    "question": "List orders that are not delivered.",
+    "expected_sql": "SELECT order_id, status FROM orders WHERE status <> 'delivered' ORDER BY order_id",
+    "category": "filtering",
+    "difficulty": "easy",
+    "order_matters": false
+  },
+  {
+    "id": 21,
+    "question": "Find orders placed on or after 2026-09-05.",
+    "expected_sql": "SELECT order_id, order_date FROM orders WHERE order_date >= '2026-09-05' ORDER BY order_date, order_id",
+    "category": "filtering",
+    "difficulty": "easy",
+    "order_matters": false
+  },
+  {
+    "id": 22,
+    "question": "Count the number of orders for each status.",
+    "expected_sql": "SELECT status, COUNT(*) FROM orders GROUP BY status ORDER BY status",
+    "category": "aggregation",
+    "difficulty": "medium",
+    "order_matters": false
+  },
+  {
+    "id": 23,
+    "question": "Find the names of customers who have placed at least one order.",
+    "expected_sql": "SELECT DISTINCT customers.name FROM customers JOIN orders ON customers.customer_id = orders.customer_id ORDER BY customers.name",
+    "category": "joins",
+    "difficulty": "medium",
+    "order_matters": false
+  },
+  {
+    "id": 24,
+    "question": "Find customers who have never placed an order.",
+    "expected_sql": "SELECT customers.name FROM customers LEFT JOIN orders ON customers.customer_id = orders.customer_id WHERE orders.order_id IS NULL ORDER BY customers.customer_id",
+    "category": "joins",
+    "difficulty": "medium",
+    "order_matters": false
+  },
+  {
+    "id": 25,
+    "question": "Show each order date, order ID, and customer name.",
+    "expected_sql": "SELECT orders.order_date, orders.order_id, customers.name FROM orders JOIN customers ON orders.customer_id = customers.customer_id ORDER BY orders.order_date, orders.order_id",
+    "category": "joins",
+    "difficulty": "medium",
+    "order_matters": false
+  },
+  {
+    "id": 26,
+    "question": "Find all orders placed by customers from Mumbai.",
+    "expected_sql": "SELECT orders.order_id FROM orders JOIN customers ON orders.customer_id = customers.customer_id WHERE customers.city = 'Mumbai' ORDER BY orders.order_id",
+    "category": "joins",
+    "difficulty": "medium",
+    "order_matters": false
+  },
+  {
+    "id": 27,
+    "question": "Count orders placed by each customer, including customers with no orders.",
+    "expected_sql": "SELECT customers.name, COUNT(orders.order_id) FROM customers LEFT JOIN orders ON customers.customer_id = orders.customer_id GROUP BY customers.customer_id, customers.name ORDER BY customers.customer_id",
+    "category": "joins",
+    "difficulty": "medium",
+    "order_matters": false
+  },
+  {
+    "id": 28,
+    "question": "Find the total amount spent on order items by each customer across all their orders.",
+    "expected_sql": "SELECT customers.name, COALESCE(SUM(order_items.quantity * order_items.unit_price), 0) FROM customers LEFT JOIN orders ON customers.customer_id = orders.customer_id LEFT JOIN order_items ON orders.order_id = order_items.order_id GROUP BY customers.customer_id, customers.name ORDER BY customers.customer_id",
+    "category": "joins",
+    "difficulty": "hard",
+    "order_matters": false
+  },
+  {
+    "id": 29,
+    "question": "List the product names and quantities in order 101.",
+    "expected_sql": "SELECT products.name, order_items.quantity FROM order_items JOIN products ON order_items.product_id = products.product_id WHERE order_items.order_id = 101 ORDER BY products.product_id",
+    "category": "joins",
+    "difficulty": "medium",
+    "order_matters": false
+  },
+  {
+    "id": 30,
+    "question": "Find the names of products included in delivered orders.",
+    "expected_sql": "SELECT DISTINCT products.name FROM products JOIN order_items ON products.product_id = order_items.product_id JOIN orders ON order_items.order_id = orders.order_id WHERE orders.status = 'delivered' ORDER BY products.name",
+    "category": "joins",
+    "difficulty": "hard",
+    "order_matters": false
+  },
+  {
+    "id": 31,
+    "question": "Find the total quantity of items in each order.",
+    "expected_sql": "SELECT order_id, SUM(quantity) FROM order_items GROUP BY order_id ORDER BY order_id",
+    "category": "aggregation",
+    "difficulty": "medium",
+    "order_matters": false
+  },
+  {
+    "id": 32,
+    "question": "Find the average quantity per order item.",
+    "expected_sql": "SELECT AVG(quantity) FROM order_items",
+    "category": "aggregation",
+    "difficulty": "easy",
+    "order_matters": false
+  },
+  {
+    "id": 33,
+    "question": "Find products that have never appeared in any order item.",
+    "expected_sql": "SELECT products.name FROM products LEFT JOIN order_items ON products.product_id = order_items.product_id WHERE order_items.order_item_id IS NULL ORDER BY products.product_id",
+    "category": "joins",
+    "difficulty": "medium",
+    "order_matters": false
+  },
+  {
+    "id": 34,
+    "question": "Find the number of distinct products that have been ordered.",
+    "expected_sql": "SELECT COUNT(DISTINCT product_id) FROM order_items",
+    "category": "aggregation",
+    "difficulty": "medium",
+    "order_matters": true
+  },
+  {
+    "id": 35,
+    "question": "Find the total revenue value of all order items, regardless of order status.",
+    "expected_sql": "SELECT SUM(quantity * unit_price) FROM order_items",
+    "category": "aggregation",
+    "difficulty": "easy",
+    "order_matters": false
+  },
+  {
+    "id": 36,
+    "question": "Find the total item value for delivered orders only.",
+    "expected_sql": "SELECT SUM(order_items.quantity * order_items.unit_price) FROM order_items JOIN orders ON order_items.order_id = orders.order_id WHERE orders.status = 'delivered'",
+    "category": "joins",
+    "difficulty": "medium",
+    "order_matters": false
+  },
+  {
+    "id": 37,
+    "question": "Find products whose names contain the word 'Cable'.",
+    "expected_sql": "SELECT name FROM products WHERE name LIKE '%Cable%' ORDER BY product_id",
+    "category": "filtering",
+    "difficulty": "easy",
+    "order_matters": false
+  },
+  {
+    "id": 38,
+    "question": "Find products whose category is either Electronics or Accessories.",
+    "expected_sql": "SELECT name, category FROM products WHERE category IN ('Electronics', 'Accessories') ORDER BY product_id",
+    "category": "filtering",
+    "difficulty": "easy",
+    "order_matters": false
+  },
+  {
+    "id": 39,
+    "question": "Find products priced above the average price of all products.",
+    "expected_sql": "SELECT name, price FROM products WHERE price > (SELECT AVG(price) FROM products) ORDER BY price DESC, product_id",
+    "category": "subquery",
+    "difficulty": "hard",
+    "order_matters": false
+  },
+  {
+    "id": 40,
+    "question": "Find the second most expensive product.",
+    "expected_sql": "SELECT name, price FROM products ORDER BY price DESC, product_id LIMIT 1 OFFSET 1",
+    "category": "sorting",
+    "difficulty": "medium",
+    "order_matters": true
+  },
+  {
+    "id": 41,
+    "question": "Find the customer who placed order 103.",
+    "expected_sql": "SELECT customers.name FROM orders JOIN customers ON orders.customer_id = customers.customer_id WHERE orders.order_id = 103",
+    "category": "joins",
+    "difficulty": "medium",
+    "order_matters": false
+  },
+  {
+    "id": 42,
+    "question": "Find the city and number of customers in each city.",
+    "expected_sql": "SELECT city, COUNT(*) FROM customers GROUP BY city ORDER BY city",
+    "category": "aggregation",
+    "difficulty": "medium",
+    "order_matters": false
+  },
+  {
+    "id": 43,
+    "question": "Find cities with more than one registered customer.",
+    "expected_sql": "SELECT city FROM customers GROUP BY city HAVING COUNT(*) > 1 ORDER BY city",
+    "category": "aggregation",
+    "difficulty": "medium",
+    "order_matters": false
+  },
+  {
+    "id": 44,
+    "question": "Find orders that contain more than one unit in total.",
+    "expected_sql": "SELECT order_id FROM order_items GROUP BY order_id HAVING SUM(quantity) > 1 ORDER BY order_id",
+    "category": "aggregation",
+    "difficulty": "medium",
+    "order_matters": false
+  },
+  {
+    "id": 45,
+    "question": "Find each product's name and the total revenue generated by that product, including products with no sales.",
+    "expected_sql": "SELECT products.name, COALESCE(SUM(order_items.quantity * order_items.unit_price), 0) FROM products LEFT JOIN order_items ON products.product_id = order_items.product_id GROUP BY products.product_id, products.name ORDER BY products.product_id",
+    "category": "joins",
+    "difficulty": "hard",
+    "order_matters": false
+  },
+  {
+    "id": 46,
+    "question": "Find the most recently placed order.",
+    "expected_sql": "SELECT order_id, order_date FROM orders ORDER BY order_date DESC, order_id DESC LIMIT 1",
+    "category": "sorting",
+    "difficulty": "easy",
+    "order_matters": true
+  },
+  {
+    "id": 47,
+    "question": "Find all customers whose names start with the letter A.",
+    "expected_sql": "SELECT name FROM customers WHERE name LIKE 'A%' ORDER BY customer_id",
+    "category": "filtering",
+    "difficulty": "easy",
+    "order_matters": false
+  },
+  {
+    "id": 48,
+    "question": "Find products with a price exactly equal to 799.",
+    "expected_sql": "SELECT name FROM products WHERE price = 799 ORDER BY product_id",
+    "category": "filtering",
+    "difficulty": "easy",
+    "order_matters": false
+  },
+  {
+    "id": 49,
+    "question": "Find orders whose total item value exceeds 1000.",
+    "expected_sql": "SELECT order_id FROM order_items GROUP BY order_id HAVING SUM(quantity * unit_price) > 1000 ORDER BY order_id",
+    "category": "aggregation",
+    "difficulty": "hard",
+    "order_matters": false
+  },
+  {
+    "id": 50,
+    "question": "For each category, show the number of products and their average price, sorted by average price from highest to lowest.",
+    "expected_sql": "SELECT category, COUNT(*), AVG(price) FROM products GROUP BY category ORDER BY AVG(price) DESC, category",
+    "category": "aggregation",
+    "difficulty": "hard",
+    "order_matters": true
+  }
+]
