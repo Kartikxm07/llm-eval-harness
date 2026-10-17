@@ -1,0 +1,58 @@
+======================================================================
+         FAIR TWO-MODEL COMPARATIVE EVALUATION BENCHMARK
+======================================================================
+Benchmark Date (UTC)   : 2026-10-11T20:05:54.927475+00:00
+Total Paired Cases     : 50
+
+Model A (High Param)   : openai/gpt-oss-120b (groq)
+Model B (Small Param)  : openai/gpt-oss-20b (groq)
+----------------------------------------------------------------------
+Metric                       | Model A            | Model B           
+----------------------------------------------------------------------
+Passed / Total               | 41/50               | 40/50              
+Result Accuracy              | 82.00            % | 80.00            %
+95% Confidence Interval      | [69.2%, 90.23%]    | [66.96%, 88.76%]  
+SQL Execution Rate           | 100.00           % | 100.00           %
+Mean Latency                 | 0.850            s | 0.732            s
+Median Latency               | 0.850            s | 0.680            s
+----------------------------------------------------------------------
+Paired Agreement Breakdown:
+  Both Models Passed (Agreement)   : 38 cases
+  Both Models Failed (Agreement)   : 7 cases
+  Model A Passed, Model B Failed   : 3 cases (Model A Wins)
+  Model B Passed, Model A Failed   : 2 cases (Model B Wins)
+  Inter-Model Agreement Rate       : 90.00%
+  Cohen's Kappa (Agreement Chance) : 0.6753
+----------------------------------------------------------------------
+Statistical Significance (McNemar's Test):
+  Discordant Pairs (b+c)           : 5
+  Chi-squared Statistic            : 0.0
+  p-value (approximate)            : 1.0000
+  Verdict                          : Difference is NOT statistically significant (p ~= 1.0000 >= 0.05). Due to sample size (N=50), performance difference could be random variation.
+----------------------------------------------------------------------
+Category-by-Category Accuracy Comparison:
+  Category         | Model A Acc    | Model B Acc   
+  ------------------------------------------------
+  aggregation      | 82.3         % | 88.2         %
+  filtering        | 69.2         % | 69.2         %
+  joins            | 100.0        % | 100.0        %
+  sorting          | 60.0         % | 40.0         %
+  subquery         | 100.0        % | 0.0          %
+----------------------------------------------------------------------
+Discordant Cases Summary (Where Models Disagreed):
+  [Case 03] Winner: Model A | Category: sorting | Diff: easy
+    Q: Find the most expensive product.
+    Model B Error: Column count mismatch: got 2 columns, expected 1 columns.
+  [Case 11] Winner: Model A | Category: filtering | Diff: easy
+    Q: List products priced between 500 and 2000 inclusive.
+    Model B Error: Column count mismatch: got 1 columns, expected 2 columns.
+  [Case 39] Winner: Model A | Category: subquery | Diff: hard
+    Q: Find products priced above the average price of all products.
+    Model B Error: Column count mismatch: got 1 columns, expected 2 columns.
+  [Case 06] Winner: Model B | Category: filtering | Diff: easy
+    Q: Find products with fewer than 30 items in stock.
+    Model A Error: Column count mismatch: got 2 columns, expected 1 columns.
+  [Case 43] Winner: Model B | Category: aggregation | Diff: medium
+    Q: Find cities with more than one registered customer.
+    Model A Error: Column count mismatch: got 2 columns, expected 1 columns.
+======================================================================

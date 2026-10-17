@@ -1,0 +1,2416 @@
+{
+  "run_timestamp_utc": "2026-10-11T20:05:54.927475+00:00",
+  "model_name": "openai/gpt-oss-20b",
+  "provider": "groq",
+  "model_identifier": "groq/openai/gpt-oss-20b",
+  "confidence_interval_95": "[66.96%, 88.76%]",
+  "metrics": {
+    "total_planned": 50,
+    "completed_cases": 50,
+    "passed": 40,
+    "failed": 10,
+    "accuracy_percent": 80.0,
+    "sql_execution_success_rate": 100.0,
+    "generation_success_rate": 100.0,
+    "failures_by_type": {
+      "RESULT_MISMATCH": 10
+    },
+    "accuracy_by_category": {
+      "filtering": {
+        "total": 13,
+        "passed": 9,
+        "failed": 4,
+        "accuracy_percent": 69.23
+      },
+      "sorting": {
+        "total": 5,
+        "passed": 2,
+        "failed": 3,
+        "accuracy_percent": 40.0
+      },
+      "aggregation": {
+        "total": 17,
+        "passed": 15,
+        "failed": 2,
+        "accuracy_percent": 88.24
+      },
+      "joins": {
+        "total": 14,
+        "passed": 14,
+        "failed": 0,
+        "accuracy_percent": 100.0
+      },
+      "subquery": {
+        "total": 1,
+        "passed": 0,
+        "failed": 1,
+        "accuracy_percent": 0.0
+      }
+    },
+    "accuracy_by_difficulty": {
+      "easy": {
+        "total": 20,
+        "passed": 14,
+        "failed": 6,
+        "accuracy_percent": 70.0
+      },
+      "medium": {
+        "total": 24,
+        "passed": 21,
+        "failed": 3,
+        "accuracy_percent": 87.5
+      },
+      "hard": {
+        "total": 6,
+        "passed": 5,
+        "failed": 1,
+        "accuracy_percent": 83.33
+      }
+    }
+  },
+  "latency_summary": {
+    "count": 50,
+    "mean_seconds": 0.7321,
+    "median_seconds": 0.6802,
+    "p90_seconds": 1.1221,
+    "p95_seconds": 1.3945,
+    "min_seconds": 0.2766,
+    "max_seconds": 1.6069
+  },
+  "results": [
+    {
+      "id": 1,
+      "question": "Find all products costing less than 1000.",
+      "category": "filtering",
+      "difficulty": "easy",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT name FROM products WHERE price < 1000;",
+      "expected_sql": "SELECT name FROM products WHERE price < 1000 ORDER BY product_id",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          "Wireless Mouse"
+        ],
+        [
+          "USB-C Cable"
+        ],
+        [
+          "Cotton T-Shirt"
+        ],
+        [
+          "Laptop Stand"
+        ],
+        [
+          "Water Bottle"
+        ]
+      ],
+      "expected_result": [
+        [
+          "Wireless Mouse"
+        ],
+        [
+          "USB-C Cable"
+        ],
+        [
+          "Cotton T-Shirt"
+        ],
+        [
+          "Laptop Stand"
+        ],
+        [
+          "Water Bottle"
+        ]
+      ],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 1.572
+    },
+    {
+      "id": 2,
+      "question": "List all products in the Electronics category.",
+      "category": "filtering",
+      "difficulty": "easy",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT name FROM products WHERE category='Electronics';",
+      "expected_sql": "SELECT name FROM products WHERE category = 'Electronics' ORDER BY product_id",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          "Wireless Mouse"
+        ],
+        [
+          "Mechanical Keyboard"
+        ],
+        [
+          "Bluetooth Headphones"
+        ]
+      ],
+      "expected_result": [
+        [
+          "Wireless Mouse"
+        ],
+        [
+          "Mechanical Keyboard"
+        ],
+        [
+          "Bluetooth Headphones"
+        ]
+      ],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 0.4794
+    },
+    {
+      "id": 3,
+      "question": "Find the most expensive product.",
+      "category": "sorting",
+      "difficulty": "easy",
+      "order_matters": true,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT name, price FROM products ORDER BY price DESC LIMIT 1;",
+      "expected_sql": "SELECT name FROM products ORDER BY price DESC, product_id LIMIT 1",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          "Mechanical Keyboard",
+          2499.0
+        ]
+      ],
+      "expected_result": [
+        [
+          "Mechanical Keyboard"
+        ]
+      ],
+      "passed": false,
+      "failure_type": "RESULT_MISMATCH",
+      "error": "Column count mismatch: got 2 columns, expected 1 columns.",
+      "latency_seconds": 0.7238
+    },
+    {
+      "id": 4,
+      "question": "Count all products in the store.",
+      "category": "aggregation",
+      "difficulty": "easy",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT COUNT(*) FROM products;",
+      "expected_sql": "SELECT COUNT(*) FROM products",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          8
+        ]
+      ],
+      "expected_result": [
+        [
+          8
+        ]
+      ],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 0.5187
+    },
+    {
+      "id": 5,
+      "question": "Find the average price of all products.",
+      "category": "aggregation",
+      "difficulty": "easy",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT AVG(price) FROM products;",
+      "expected_sql": "SELECT AVG(price) FROM products",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          1174.0
+        ]
+      ],
+      "expected_result": [
+        [
+          1174.0
+        ]
+      ],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 0.5622
+    },
+    {
+      "id": 6,
+      "question": "Find products with fewer than 30 items in stock.",
+      "category": "filtering",
+      "difficulty": "easy",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT name FROM products WHERE stock < 30;",
+      "expected_sql": "SELECT name FROM products WHERE stock < 30 ORDER BY product_id",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          "Mechanical Keyboard"
+        ],
+        [
+          "Running Shoes"
+        ],
+        [
+          "Bluetooth Headphones"
+        ]
+      ],
+      "expected_result": [
+        [
+          "Mechanical Keyboard"
+        ],
+        [
+          "Running Shoes"
+        ],
+        [
+          "Bluetooth Headphones"
+        ]
+      ],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 0.54
+    },
+    {
+      "id": 7,
+      "question": "List customers who live in Mumbai.",
+      "category": "filtering",
+      "difficulty": "easy",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT name FROM customers WHERE city='Mumbai';",
+      "expected_sql": "SELECT name FROM customers WHERE city = 'Mumbai' ORDER BY customer_id",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          "Aarav"
+        ],
+        [
+          "Anaya"
+        ]
+      ],
+      "expected_result": [
+        [
+          "Aarav"
+        ],
+        [
+          "Anaya"
+        ]
+      ],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 0.8258
+    },
+    {
+      "id": 8,
+      "question": "Show each order ID with the name of the customer who placed it.",
+      "category": "joins",
+      "difficulty": "medium",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT o.order_id, c.name\nFROM orders o\nJOIN customers c ON o.customer_id = c.customer_id\nORDER BY o.order_id;",
+      "expected_sql": "SELECT orders.order_id, customers.name FROM orders JOIN customers ON orders.customer_id = customers.customer_id ORDER BY orders.order_id",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          101,
+          "Aarav"
+        ],
+        [
+          102,
+          "Diya"
+        ],
+        [
+          103,
+          "Aarav"
+        ],
+        [
+          104,
+          "Kabir"
+        ],
+        [
+          105,
+          "Anaya"
+        ],
+        [
+          106,
+          "Ishaan"
+        ]
+      ],
+      "expected_result": [
+        [
+          101,
+          "Aarav"
+        ],
+        [
+          102,
+          "Diya"
+        ],
+        [
+          103,
+          "Aarav"
+        ],
+        [
+          104,
+          "Kabir"
+        ],
+        [
+          105,
+          "Anaya"
+        ],
+        [
+          106,
+          "Ishaan"
+        ]
+      ],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 1.0036
+    },
+    {
+      "id": 9,
+      "question": "Find the total quantity ordered for each product, including products never ordered.",
+      "category": "joins",
+      "difficulty": "medium",
+      "order_matters": true,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT p.name, COALESCE(SUM(oi.quantity), 0) AS total_quantity\nFROM products p\nLEFT JOIN order_items oi ON p.product_id = oi.product_id\nGROUP BY p.product_id, p.name\nORDER BY p.product_id;",
+      "expected_sql": "SELECT products.name, COALESCE(SUM(order_items.quantity), 0) FROM products LEFT JOIN order_items ON products.product_id = order_items.product_id GROUP BY products.product_id, products.name ORDER BY products.product_id",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          "Wireless Mouse",
+          3
+        ],
+        [
+          "Mechanical Keyboard",
+          1
+        ],
+        [
+          "USB-C Cable",
+          1
+        ],
+        [
+          "Running Shoes",
+          1
+        ],
+        [
+          "Cotton T-Shirt",
+          3
+        ],
+        [
+          "Bluetooth Headphones",
+          1
+        ],
+        [
+          "Laptop Stand",
+          1
+        ],
+        [
+          "Water Bottle",
+          2
+        ]
+      ],
+      "expected_result": [
+        [
+          "Wireless Mouse",
+          3
+        ],
+        [
+          "Mechanical Keyboard",
+          1
+        ],
+        [
+          "USB-C Cable",
+          1
+        ],
+        [
+          "Running Shoes",
+          1
+        ],
+        [
+          "Cotton T-Shirt",
+          3
+        ],
+        [
+          "Bluetooth Headphones",
+          1
+        ],
+        [
+          "Laptop Stand",
+          1
+        ],
+        [
+          "Water Bottle",
+          2
+        ]
+      ],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 0.7525
+    },
+    {
+      "id": 10,
+      "question": "Find the total value of items in each order.",
+      "category": "aggregation",
+      "difficulty": "medium",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT order_id, SUM(quantity * unit_price) AS total_value\nFROM order_items\nGROUP BY order_id\nORDER BY order_id;",
+      "expected_sql": "SELECT order_id, SUM(quantity * unit_price) FROM order_items GROUP BY order_id ORDER BY order_id",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          101,
+          1897.0
+        ],
+        [
+          102,
+          2499.0
+        ],
+        [
+          103,
+          2597.0
+        ],
+        [
+          104,
+          1999.0
+        ],
+        [
+          105,
+          2796.0
+        ],
+        [
+          106,
+          799.0
+        ]
+      ],
+      "expected_result": [
+        [
+          101,
+          1897.0
+        ],
+        [
+          102,
+          2499.0
+        ],
+        [
+          103,
+          2597.0
+        ],
+        [
+          104,
+          1999.0
+        ],
+        [
+          105,
+          2796.0
+        ],
+        [
+          106,
+          799.0
+        ]
+      ],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 0.4613
+    },
+    {
+      "id": 11,
+      "question": "List products priced between 500 and 2000 inclusive.",
+      "category": "filtering",
+      "difficulty": "easy",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT name FROM products WHERE price BETWEEN 500 AND 2000;",
+      "expected_sql": "SELECT name, price FROM products WHERE price BETWEEN 500 AND 2000 ORDER BY price, product_id",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          "Wireless Mouse"
+        ],
+        [
+          "Running Shoes"
+        ],
+        [
+          "Cotton T-Shirt"
+        ],
+        [
+          "Bluetooth Headphones"
+        ],
+        [
+          "Laptop Stand"
+        ]
+      ],
+      "expected_result": [
+        [
+          "Cotton T-Shirt",
+          599.0
+        ],
+        [
+          "Wireless Mouse",
+          799.0
+        ],
+        [
+          "Laptop Stand",
+          999.0
+        ],
+        [
+          "Bluetooth Headphones",
+          1799.0
+        ],
+        [
+          "Running Shoes",
+          1999.0
+        ]
+      ],
+      "passed": false,
+      "failure_type": "RESULT_MISMATCH",
+      "error": "Column count mismatch: got 1 columns, expected 2 columns.",
+      "latency_seconds": 1.0478
+    },
+    {
+      "id": 12,
+      "question": "List products that have at least 30 items in stock.",
+      "category": "filtering",
+      "difficulty": "easy",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT name, stock\nFROM products\nWHERE stock >= 30\nORDER BY product_id;",
+      "expected_sql": "SELECT name, stock FROM products WHERE stock >= 30 ORDER BY product_id",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          "Wireless Mouse",
+          40
+        ],
+        [
+          "USB-C Cable",
+          100
+        ],
+        [
+          "Cotton T-Shirt",
+          50
+        ],
+        [
+          "Laptop Stand",
+          30
+        ],
+        [
+          "Water Bottle",
+          60
+        ]
+      ],
+      "expected_result": [
+        [
+          "Wireless Mouse",
+          40
+        ],
+        [
+          "USB-C Cable",
+          100
+        ],
+        [
+          "Cotton T-Shirt",
+          50
+        ],
+        [
+          "Laptop Stand",
+          30
+        ],
+        [
+          "Water Bottle",
+          60
+        ]
+      ],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 0.9056
+    },
+    {
+      "id": 13,
+      "question": "Show all products from cheapest to most expensive.",
+      "category": "sorting",
+      "difficulty": "easy",
+      "order_matters": true,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT name, price FROM products ORDER BY price ASC, product_id;",
+      "expected_sql": "SELECT name, price FROM products ORDER BY price, product_id",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          "USB-C Cable",
+          299.0
+        ],
+        [
+          "Water Bottle",
+          399.0
+        ],
+        [
+          "Cotton T-Shirt",
+          599.0
+        ],
+        [
+          "Wireless Mouse",
+          799.0
+        ],
+        [
+          "Laptop Stand",
+          999.0
+        ],
+        [
+          "Bluetooth Headphones",
+          1799.0
+        ],
+        [
+          "Running Shoes",
+          1999.0
+        ],
+        [
+          "Mechanical Keyboard",
+          2499.0
+        ]
+      ],
+      "expected_result": [
+        [
+          "USB-C Cable",
+          299.0
+        ],
+        [
+          "Water Bottle",
+          399.0
+        ],
+        [
+          "Cotton T-Shirt",
+          599.0
+        ],
+        [
+          "Wireless Mouse",
+          799.0
+        ],
+        [
+          "Laptop Stand",
+          999.0
+        ],
+        [
+          "Bluetooth Headphones",
+          1799.0
+        ],
+        [
+          "Running Shoes",
+          1999.0
+        ],
+        [
+          "Mechanical Keyboard",
+          2499.0
+        ]
+      ],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 0.7747
+    },
+    {
+      "id": 14,
+      "question": "Find the three cheapest products.",
+      "category": "sorting",
+      "difficulty": "medium",
+      "order_matters": true,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT name, price\nFROM products\nORDER BY price ASC, product_id ASC\nLIMIT 3;",
+      "expected_sql": "SELECT name, price FROM products ORDER BY price, product_id LIMIT 3",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          "USB-C Cable",
+          299.0
+        ],
+        [
+          "Water Bottle",
+          399.0
+        ],
+        [
+          "Cotton T-Shirt",
+          599.0
+        ]
+      ],
+      "expected_result": [
+        [
+          "USB-C Cable",
+          299.0
+        ],
+        [
+          "Water Bottle",
+          399.0
+        ],
+        [
+          "Cotton T-Shirt",
+          599.0
+        ]
+      ],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 0.2973
+    },
+    {
+      "id": 15,
+      "question": "Find the total number of products in each category.",
+      "category": "aggregation",
+      "difficulty": "medium",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT category, COUNT(*) AS total_products\nFROM products\nGROUP BY category\nORDER BY category;",
+      "expected_sql": "SELECT category, COUNT(*) FROM products GROUP BY category ORDER BY category",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          "Accessories",
+          2
+        ],
+        [
+          "Electronics",
+          3
+        ],
+        [
+          "Fashion",
+          2
+        ],
+        [
+          "Home",
+          1
+        ]
+      ],
+      "expected_result": [
+        [
+          "Accessories",
+          2
+        ],
+        [
+          "Electronics",
+          3
+        ],
+        [
+          "Fashion",
+          2
+        ],
+        [
+          "Home",
+          1
+        ]
+      ],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 0.4739
+    },
+    {
+      "id": 16,
+      "question": "Find the average product price in each category.",
+      "category": "aggregation",
+      "difficulty": "medium",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT category, AVG(price) AS avg_price FROM products GROUP BY category;",
+      "expected_sql": "SELECT category, AVG(price) FROM products GROUP BY category ORDER BY category",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          "Accessories",
+          649.0
+        ],
+        [
+          "Electronics",
+          1699.0
+        ],
+        [
+          "Fashion",
+          1299.0
+        ],
+        [
+          "Home",
+          399.0
+        ]
+      ],
+      "expected_result": [
+        [
+          "Accessories",
+          649.0
+        ],
+        [
+          "Electronics",
+          1699.0
+        ],
+        [
+          "Fashion",
+          1299.0
+        ],
+        [
+          "Home",
+          399.0
+        ]
+      ],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 0.7626
+    },
+    {
+      "id": 17,
+      "question": "Find the highest-priced product in each category.",
+      "category": "aggregation",
+      "difficulty": "medium",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT p.category, p.name\nFROM products p\nJOIN (\n    SELECT category, MAX(price) AS max_price\n    FROM products\n    GROUP BY category\n) m ON p.category = m.category AND p.price = m.max_price\nORDER BY p.category, p.product_id;",
+      "expected_sql": "SELECT category, MAX(price) FROM products GROUP BY category ORDER BY category",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          "Accessories",
+          "Laptop Stand"
+        ],
+        [
+          "Electronics",
+          "Mechanical Keyboard"
+        ],
+        [
+          "Fashion",
+          "Running Shoes"
+        ],
+        [
+          "Home",
+          "Water Bottle"
+        ]
+      ],
+      "expected_result": [
+        [
+          "Accessories",
+          999.0
+        ],
+        [
+          "Electronics",
+          2499.0
+        ],
+        [
+          "Fashion",
+          1999.0
+        ],
+        [
+          "Home",
+          399.0
+        ]
+      ],
+      "passed": false,
+      "failure_type": "RESULT_MISMATCH",
+      "error": "Result content mismatch (missing rows: 4, unexpected rows: 4).",
+      "latency_seconds": 1.2746
+    },
+    {
+      "id": 18,
+      "question": "Find categories that contain more than one product.",
+      "category": "aggregation",
+      "difficulty": "medium",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT category, COUNT(*) AS product_count\nFROM products\nGROUP BY category\nHAVING COUNT(*) > 1;",
+      "expected_sql": "SELECT category FROM products GROUP BY category HAVING COUNT(*) > 1 ORDER BY category",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          "Accessories",
+          2
+        ],
+        [
+          "Electronics",
+          3
+        ],
+        [
+          "Fashion",
+          2
+        ]
+      ],
+      "expected_result": [
+        [
+          "Accessories"
+        ],
+        [
+          "Electronics"
+        ],
+        [
+          "Fashion"
+        ]
+      ],
+      "passed": false,
+      "failure_type": "RESULT_MISMATCH",
+      "error": "Column count mismatch: got 2 columns, expected 1 columns.",
+      "latency_seconds": 0.9446
+    },
+    {
+      "id": 19,
+      "question": "List all orders that have been delivered.",
+      "category": "filtering",
+      "difficulty": "easy",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT order_id FROM orders WHERE status = 'delivered';",
+      "expected_sql": "SELECT order_id FROM orders WHERE status = 'delivered' ORDER BY order_id",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          101
+        ],
+        [
+          103
+        ],
+        [
+          105
+        ]
+      ],
+      "expected_result": [
+        [
+          101
+        ],
+        [
+          103
+        ],
+        [
+          105
+        ]
+      ],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 0.4173
+    },
+    {
+      "id": 20,
+      "question": "List orders that are not delivered.",
+      "category": "filtering",
+      "difficulty": "easy",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT order_id FROM orders WHERE status <> 'delivered' ORDER BY order_id;",
+      "expected_sql": "SELECT order_id, status FROM orders WHERE status <> 'delivered' ORDER BY order_id",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          102
+        ],
+        [
+          104
+        ],
+        [
+          106
+        ]
+      ],
+      "expected_result": [
+        [
+          102,
+          "shipped"
+        ],
+        [
+          104,
+          "cancelled"
+        ],
+        [
+          106,
+          "processing"
+        ]
+      ],
+      "passed": false,
+      "failure_type": "RESULT_MISMATCH",
+      "error": "Column count mismatch: got 1 columns, expected 2 columns.",
+      "latency_seconds": 0.7603
+    },
+    {
+      "id": 21,
+      "question": "Find orders placed on or after 2026-09-05.",
+      "category": "filtering",
+      "difficulty": "easy",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT order_id FROM orders WHERE order_date >= '2026-09-05';",
+      "expected_sql": "SELECT order_id, order_date FROM orders WHERE order_date >= '2026-09-05' ORDER BY order_date, order_id",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          103
+        ],
+        [
+          104
+        ],
+        [
+          105
+        ],
+        [
+          106
+        ]
+      ],
+      "expected_result": [
+        [
+          103,
+          "2026-09-05"
+        ],
+        [
+          104,
+          "2026-09-07"
+        ],
+        [
+          105,
+          "2026-09-10"
+        ],
+        [
+          106,
+          "2026-09-12"
+        ]
+      ],
+      "passed": false,
+      "failure_type": "RESULT_MISMATCH",
+      "error": "Column count mismatch: got 1 columns, expected 2 columns.",
+      "latency_seconds": 0.6233
+    },
+    {
+      "id": 22,
+      "question": "Count the number of orders for each status.",
+      "category": "aggregation",
+      "difficulty": "medium",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT status, COUNT(*) AS order_count\nFROM orders\nGROUP BY status;",
+      "expected_sql": "SELECT status, COUNT(*) FROM orders GROUP BY status ORDER BY status",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          "cancelled",
+          1
+        ],
+        [
+          "delivered",
+          3
+        ],
+        [
+          "processing",
+          1
+        ],
+        [
+          "shipped",
+          1
+        ]
+      ],
+      "expected_result": [
+        [
+          "cancelled",
+          1
+        ],
+        [
+          "delivered",
+          3
+        ],
+        [
+          "processing",
+          1
+        ],
+        [
+          "shipped",
+          1
+        ]
+      ],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 0.6802
+    },
+    {
+      "id": 23,
+      "question": "Find the names of customers who have placed at least one order.",
+      "category": "joins",
+      "difficulty": "medium",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT DISTINCT c.name\nFROM customers c\nJOIN orders o ON c.customer_id = o.customer_id;",
+      "expected_sql": "SELECT DISTINCT customers.name FROM customers JOIN orders ON customers.customer_id = orders.customer_id ORDER BY customers.name",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          "Aarav"
+        ],
+        [
+          "Diya"
+        ],
+        [
+          "Kabir"
+        ],
+        [
+          "Anaya"
+        ],
+        [
+          "Ishaan"
+        ]
+      ],
+      "expected_result": [
+        [
+          "Aarav"
+        ],
+        [
+          "Anaya"
+        ],
+        [
+          "Diya"
+        ],
+        [
+          "Ishaan"
+        ],
+        [
+          "Kabir"
+        ]
+      ],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 0.662
+    },
+    {
+      "id": 24,
+      "question": "Find customers who have never placed an order.",
+      "category": "joins",
+      "difficulty": "medium",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT name FROM customers LEFT JOIN orders ON customers.customer_id = orders.customer_id WHERE orders.order_id IS NULL;",
+      "expected_sql": "SELECT customers.name FROM customers LEFT JOIN orders ON customers.customer_id = orders.customer_id WHERE orders.order_id IS NULL ORDER BY customers.customer_id",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [],
+      "expected_result": [],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 0.5682
+    },
+    {
+      "id": 25,
+      "question": "Show each order date, order ID, and customer name.",
+      "category": "joins",
+      "difficulty": "medium",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT o.order_date, o.order_id, c.name\nFROM orders o\nJOIN customers c ON o.customer_id = c.customer_id;",
+      "expected_sql": "SELECT orders.order_date, orders.order_id, customers.name FROM orders JOIN customers ON orders.customer_id = customers.customer_id ORDER BY orders.order_date, orders.order_id",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          "2026-09-01",
+          101,
+          "Aarav"
+        ],
+        [
+          "2026-09-03",
+          102,
+          "Diya"
+        ],
+        [
+          "2026-09-05",
+          103,
+          "Aarav"
+        ],
+        [
+          "2026-09-07",
+          104,
+          "Kabir"
+        ],
+        [
+          "2026-09-10",
+          105,
+          "Anaya"
+        ],
+        [
+          "2026-09-12",
+          106,
+          "Ishaan"
+        ]
+      ],
+      "expected_result": [
+        [
+          "2026-09-01",
+          101,
+          "Aarav"
+        ],
+        [
+          "2026-09-03",
+          102,
+          "Diya"
+        ],
+        [
+          "2026-09-05",
+          103,
+          "Aarav"
+        ],
+        [
+          "2026-09-07",
+          104,
+          "Kabir"
+        ],
+        [
+          "2026-09-10",
+          105,
+          "Anaya"
+        ],
+        [
+          "2026-09-12",
+          106,
+          "Ishaan"
+        ]
+      ],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 0.6854
+    },
+    {
+      "id": 26,
+      "question": "Find all orders placed by customers from Mumbai.",
+      "category": "joins",
+      "difficulty": "medium",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT order_id\nFROM orders\nJOIN customers ON orders.customer_id = customers.customer_id\nWHERE customers.city = 'Mumbai';",
+      "expected_sql": "SELECT orders.order_id FROM orders JOIN customers ON orders.customer_id = customers.customer_id WHERE customers.city = 'Mumbai' ORDER BY orders.order_id",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          101
+        ],
+        [
+          103
+        ],
+        [
+          105
+        ]
+      ],
+      "expected_result": [
+        [
+          101
+        ],
+        [
+          103
+        ],
+        [
+          105
+        ]
+      ],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 1.6069
+    },
+    {
+      "id": 27,
+      "question": "Count orders placed by each customer, including customers with no orders.",
+      "category": "joins",
+      "difficulty": "medium",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT c.name, COUNT(o.order_id) AS order_count\nFROM customers c\nLEFT JOIN orders o ON c.customer_id = o.customer_id\nGROUP BY c.customer_id, c.name\nORDER BY c.customer_id;",
+      "expected_sql": "SELECT customers.name, COUNT(orders.order_id) FROM customers LEFT JOIN orders ON customers.customer_id = orders.customer_id GROUP BY customers.customer_id, customers.name ORDER BY customers.customer_id",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          "Aarav",
+          2
+        ],
+        [
+          "Diya",
+          1
+        ],
+        [
+          "Kabir",
+          1
+        ],
+        [
+          "Anaya",
+          1
+        ],
+        [
+          "Ishaan",
+          1
+        ]
+      ],
+      "expected_result": [
+        [
+          "Aarav",
+          2
+        ],
+        [
+          "Diya",
+          1
+        ],
+        [
+          "Kabir",
+          1
+        ],
+        [
+          "Anaya",
+          1
+        ],
+        [
+          "Ishaan",
+          1
+        ]
+      ],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 0.7436
+    },
+    {
+      "id": 28,
+      "question": "Find the total amount spent on order items by each customer across all their orders.",
+      "category": "joins",
+      "difficulty": "hard",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT customers.name, SUM(order_items.quantity * order_items.unit_price) AS total_spent\nFROM customers\nJOIN orders ON customers.customer_id = orders.customer_id\nJOIN order_items ON orders.order_id = order_items.order_id\nGROUP BY customers.name;",
+      "expected_sql": "SELECT customers.name, COALESCE(SUM(order_items.quantity * order_items.unit_price), 0) FROM customers LEFT JOIN orders ON customers.customer_id = orders.customer_id LEFT JOIN order_items ON orders.order_id = order_items.order_id GROUP BY customers.customer_id, customers.name ORDER BY customers.customer_id",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          "Aarav",
+          4494.0
+        ],
+        [
+          "Anaya",
+          2796.0
+        ],
+        [
+          "Diya",
+          2499.0
+        ],
+        [
+          "Ishaan",
+          799.0
+        ],
+        [
+          "Kabir",
+          1999.0
+        ]
+      ],
+      "expected_result": [
+        [
+          "Aarav",
+          4494.0
+        ],
+        [
+          "Diya",
+          2499.0
+        ],
+        [
+          "Kabir",
+          1999.0
+        ],
+        [
+          "Anaya",
+          2796.0
+        ],
+        [
+          "Ishaan",
+          799.0
+        ]
+      ],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 0.7803
+    },
+    {
+      "id": 29,
+      "question": "List the product names and quantities in order 101.",
+      "category": "joins",
+      "difficulty": "medium",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT p.name, oi.quantity\nFROM order_items oi\nJOIN products p ON oi.product_id = p.product_id\nWHERE oi.order_id = 101\nORDER BY p.product_id;",
+      "expected_sql": "SELECT products.name, order_items.quantity FROM order_items JOIN products ON order_items.product_id = products.product_id WHERE order_items.order_id = 101 ORDER BY products.product_id",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          "Wireless Mouse",
+          2
+        ],
+        [
+          "USB-C Cable",
+          1
+        ]
+      ],
+      "expected_result": [
+        [
+          "Wireless Mouse",
+          2
+        ],
+        [
+          "USB-C Cable",
+          1
+        ]
+      ],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 0.8599
+    },
+    {
+      "id": 30,
+      "question": "Find the names of products included in delivered orders.",
+      "category": "joins",
+      "difficulty": "hard",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT DISTINCT p.name\nFROM products p\nJOIN order_items oi ON p.product_id = oi.product_id\nJOIN orders o ON oi.order_id = o.order_id\nWHERE o.status = 'delivered';",
+      "expected_sql": "SELECT DISTINCT products.name FROM products JOIN order_items ON products.product_id = order_items.product_id JOIN orders ON order_items.order_id = orders.order_id WHERE orders.status = 'delivered' ORDER BY products.name",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          "Wireless Mouse"
+        ],
+        [
+          "USB-C Cable"
+        ],
+        [
+          "Bluetooth Headphones"
+        ],
+        [
+          "Water Bottle"
+        ],
+        [
+          "Cotton T-Shirt"
+        ],
+        [
+          "Laptop Stand"
+        ]
+      ],
+      "expected_result": [
+        [
+          "Bluetooth Headphones"
+        ],
+        [
+          "Cotton T-Shirt"
+        ],
+        [
+          "Laptop Stand"
+        ],
+        [
+          "USB-C Cable"
+        ],
+        [
+          "Water Bottle"
+        ],
+        [
+          "Wireless Mouse"
+        ]
+      ],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 0.7197
+    },
+    {
+      "id": 31,
+      "question": "Find the total quantity of items in each order.",
+      "category": "aggregation",
+      "difficulty": "medium",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT order_id, SUM(quantity) AS total_quantity\nFROM order_items\nGROUP BY order_id\nORDER BY order_id;",
+      "expected_sql": "SELECT order_id, SUM(quantity) FROM order_items GROUP BY order_id ORDER BY order_id",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          101,
+          3
+        ],
+        [
+          102,
+          1
+        ],
+        [
+          103,
+          3
+        ],
+        [
+          104,
+          1
+        ],
+        [
+          105,
+          4
+        ],
+        [
+          106,
+          1
+        ]
+      ],
+      "expected_result": [
+        [
+          101,
+          3
+        ],
+        [
+          102,
+          1
+        ],
+        [
+          103,
+          3
+        ],
+        [
+          104,
+          1
+        ],
+        [
+          105,
+          4
+        ],
+        [
+          106,
+          1
+        ]
+      ],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 0.371
+    },
+    {
+      "id": 32,
+      "question": "Find the average quantity per order item.",
+      "category": "aggregation",
+      "difficulty": "easy",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT AVG(quantity) FROM order_items;",
+      "expected_sql": "SELECT AVG(quantity) FROM order_items",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          1.4444444444444444
+        ]
+      ],
+      "expected_result": [
+        [
+          1.4444444444444444
+        ]
+      ],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 0.6372
+    },
+    {
+      "id": 33,
+      "question": "Find products that have never appeared in any order item.",
+      "category": "joins",
+      "difficulty": "medium",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT name\nFROM products p\nLEFT JOIN order_items oi ON p.product_id = oi.product_id\nWHERE oi.order_item_id IS NULL\nORDER BY p.product_id;",
+      "expected_sql": "SELECT products.name FROM products LEFT JOIN order_items ON products.product_id = order_items.product_id WHERE order_items.order_item_id IS NULL ORDER BY products.product_id",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [],
+      "expected_result": [],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 0.2766
+    },
+    {
+      "id": 34,
+      "question": "Find the number of distinct products that have been ordered.",
+      "category": "aggregation",
+      "difficulty": "medium",
+      "order_matters": true,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT COUNT(DISTINCT product_id) FROM order_items;",
+      "expected_sql": "SELECT COUNT(DISTINCT product_id) FROM order_items",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          8
+        ]
+      ],
+      "expected_result": [
+        [
+          8
+        ]
+      ],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 0.5208
+    },
+    {
+      "id": 35,
+      "question": "Find the total revenue value of all order items, regardless of order status.",
+      "category": "aggregation",
+      "difficulty": "easy",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT SUM(quantity * unit_price) AS total_revenue FROM order_items;",
+      "expected_sql": "SELECT SUM(quantity * unit_price) FROM order_items",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          12587.0
+        ]
+      ],
+      "expected_result": [
+        [
+          12587.0
+        ]
+      ],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 0.4695
+    },
+    {
+      "id": 36,
+      "question": "Find the total item value for delivered orders only.",
+      "category": "joins",
+      "difficulty": "medium",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT SUM(oi.quantity * oi.unit_price) FROM order_items oi JOIN orders o ON oi.order_id = o.order_id WHERE o.status = 'delivered';",
+      "expected_sql": "SELECT SUM(order_items.quantity * order_items.unit_price) FROM order_items JOIN orders ON order_items.order_id = orders.order_id WHERE orders.status = 'delivered'",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          7290.0
+        ]
+      ],
+      "expected_result": [
+        [
+          7290.0
+        ]
+      ],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 0.7367
+    },
+    {
+      "id": 37,
+      "question": "Find products whose names contain the word 'Cable'.",
+      "category": "filtering",
+      "difficulty": "easy",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT name FROM products WHERE name LIKE '%Cable%';",
+      "expected_sql": "SELECT name FROM products WHERE name LIKE '%Cable%' ORDER BY product_id",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          "USB-C Cable"
+        ]
+      ],
+      "expected_result": [
+        [
+          "USB-C Cable"
+        ]
+      ],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 0.666
+    },
+    {
+      "id": 38,
+      "question": "Find products whose category is either Electronics or Accessories.",
+      "category": "filtering",
+      "difficulty": "easy",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT name FROM products WHERE category IN ('Electronics', 'Accessories');",
+      "expected_sql": "SELECT name, category FROM products WHERE category IN ('Electronics', 'Accessories') ORDER BY product_id",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          "Wireless Mouse"
+        ],
+        [
+          "Mechanical Keyboard"
+        ],
+        [
+          "USB-C Cable"
+        ],
+        [
+          "Bluetooth Headphones"
+        ],
+        [
+          "Laptop Stand"
+        ]
+      ],
+      "expected_result": [
+        [
+          "Wireless Mouse",
+          "Electronics"
+        ],
+        [
+          "Mechanical Keyboard",
+          "Electronics"
+        ],
+        [
+          "USB-C Cable",
+          "Accessories"
+        ],
+        [
+          "Bluetooth Headphones",
+          "Electronics"
+        ],
+        [
+          "Laptop Stand",
+          "Accessories"
+        ]
+      ],
+      "passed": false,
+      "failure_type": "RESULT_MISMATCH",
+      "error": "Column count mismatch: got 1 columns, expected 2 columns.",
+      "latency_seconds": 0.7878
+    },
+    {
+      "id": 39,
+      "question": "Find products priced above the average price of all products.",
+      "category": "subquery",
+      "difficulty": "hard",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT name FROM products WHERE price > (SELECT AVG(price) FROM products);",
+      "expected_sql": "SELECT name, price FROM products WHERE price > (SELECT AVG(price) FROM products) ORDER BY price DESC, product_id",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          "Mechanical Keyboard"
+        ],
+        [
+          "Running Shoes"
+        ],
+        [
+          "Bluetooth Headphones"
+        ]
+      ],
+      "expected_result": [
+        [
+          "Mechanical Keyboard",
+          2499.0
+        ],
+        [
+          "Running Shoes",
+          1999.0
+        ],
+        [
+          "Bluetooth Headphones",
+          1799.0
+        ]
+      ],
+      "passed": false,
+      "failure_type": "RESULT_MISMATCH",
+      "error": "Column count mismatch: got 1 columns, expected 2 columns.",
+      "latency_seconds": 1.1333
+    },
+    {
+      "id": 40,
+      "question": "Find the second most expensive product.",
+      "category": "sorting",
+      "difficulty": "medium",
+      "order_matters": true,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT name FROM products ORDER BY price DESC LIMIT 1 OFFSET 1;",
+      "expected_sql": "SELECT name, price FROM products ORDER BY price DESC, product_id LIMIT 1 OFFSET 1",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          "Running Shoes"
+        ]
+      ],
+      "expected_result": [
+        [
+          "Running Shoes",
+          1999.0
+        ]
+      ],
+      "passed": false,
+      "failure_type": "RESULT_MISMATCH",
+      "error": "Column count mismatch: got 1 columns, expected 2 columns.",
+      "latency_seconds": 1.3945
+    },
+    {
+      "id": 41,
+      "question": "Find the customer who placed order 103.",
+      "category": "joins",
+      "difficulty": "medium",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT name FROM customers JOIN orders ON customers.customer_id = orders.customer_id WHERE orders.order_id = 103;",
+      "expected_sql": "SELECT customers.name FROM orders JOIN customers ON orders.customer_id = customers.customer_id WHERE orders.order_id = 103",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          "Aarav"
+        ]
+      ],
+      "expected_result": [
+        [
+          "Aarav"
+        ]
+      ],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 0.5751
+    },
+    {
+      "id": 42,
+      "question": "Find the city and number of customers in each city.",
+      "category": "aggregation",
+      "difficulty": "medium",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT city, COUNT(*) AS customer_count FROM customers GROUP BY city;",
+      "expected_sql": "SELECT city, COUNT(*) FROM customers GROUP BY city ORDER BY city",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          "Delhi",
+          1
+        ],
+        [
+          "Mumbai",
+          2
+        ],
+        [
+          "Nagpur",
+          1
+        ],
+        [
+          "Pune",
+          1
+        ]
+      ],
+      "expected_result": [
+        [
+          "Delhi",
+          1
+        ],
+        [
+          "Mumbai",
+          2
+        ],
+        [
+          "Nagpur",
+          1
+        ],
+        [
+          "Pune",
+          1
+        ]
+      ],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 0.6392
+    },
+    {
+      "id": 43,
+      "question": "Find cities with more than one registered customer.",
+      "category": "aggregation",
+      "difficulty": "medium",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT city FROM customers GROUP BY city HAVING COUNT(*) > 1",
+      "expected_sql": "SELECT city FROM customers GROUP BY city HAVING COUNT(*) > 1 ORDER BY city",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          "Mumbai"
+        ]
+      ],
+      "expected_result": [
+        [
+          "Mumbai"
+        ]
+      ],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 0.5811
+    },
+    {
+      "id": 44,
+      "question": "Find orders that contain more than one unit in total.",
+      "category": "aggregation",
+      "difficulty": "medium",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT order_id\nFROM orders\nJOIN order_items USING (order_id)\nGROUP BY order_id\nHAVING SUM(quantity) > 1\nORDER BY order_id;",
+      "expected_sql": "SELECT order_id FROM order_items GROUP BY order_id HAVING SUM(quantity) > 1 ORDER BY order_id",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          101
+        ],
+        [
+          103
+        ],
+        [
+          105
+        ]
+      ],
+      "expected_result": [
+        [
+          101
+        ],
+        [
+          103
+        ],
+        [
+          105
+        ]
+      ],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 0.6298
+    },
+    {
+      "id": 45,
+      "question": "Find each product's name and the total revenue generated by that product, including products with no sales.",
+      "category": "joins",
+      "difficulty": "hard",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT p.name, COALESCE(SUM(oi.quantity * oi.unit_price), 0) AS revenue\nFROM products p\nLEFT JOIN order_items oi ON p.product_id = oi.product_id\nGROUP BY p.product_id, p.name\nORDER BY p.product_id;",
+      "expected_sql": "SELECT products.name, COALESCE(SUM(order_items.quantity * order_items.unit_price), 0) FROM products LEFT JOIN order_items ON products.product_id = order_items.product_id GROUP BY products.product_id, products.name ORDER BY products.product_id",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          "Wireless Mouse",
+          2397.0
+        ],
+        [
+          "Mechanical Keyboard",
+          2499.0
+        ],
+        [
+          "USB-C Cable",
+          299.0
+        ],
+        [
+          "Running Shoes",
+          1999.0
+        ],
+        [
+          "Cotton T-Shirt",
+          1797.0
+        ],
+        [
+          "Bluetooth Headphones",
+          1799.0
+        ],
+        [
+          "Laptop Stand",
+          999.0
+        ],
+        [
+          "Water Bottle",
+          798.0
+        ]
+      ],
+      "expected_result": [
+        [
+          "Wireless Mouse",
+          2397.0
+        ],
+        [
+          "Mechanical Keyboard",
+          2499.0
+        ],
+        [
+          "USB-C Cable",
+          299.0
+        ],
+        [
+          "Running Shoes",
+          1999.0
+        ],
+        [
+          "Cotton T-Shirt",
+          1797.0
+        ],
+        [
+          "Bluetooth Headphones",
+          1799.0
+        ],
+        [
+          "Laptop Stand",
+          999.0
+        ],
+        [
+          "Water Bottle",
+          798.0
+        ]
+      ],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 0.7351
+    },
+    {
+      "id": 46,
+      "question": "Find the most recently placed order.",
+      "category": "sorting",
+      "difficulty": "easy",
+      "order_matters": true,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT order_id FROM orders ORDER BY order_date DESC LIMIT 1;",
+      "expected_sql": "SELECT order_id, order_date FROM orders ORDER BY order_date DESC, order_id DESC LIMIT 1",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          106
+        ]
+      ],
+      "expected_result": [
+        [
+          106,
+          "2026-09-12"
+        ]
+      ],
+      "passed": false,
+      "failure_type": "RESULT_MISMATCH",
+      "error": "Column count mismatch: got 1 columns, expected 2 columns.",
+      "latency_seconds": 0.7262
+    },
+    {
+      "id": 47,
+      "question": "Find all customers whose names start with the letter A.",
+      "category": "filtering",
+      "difficulty": "easy",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT name FROM customers WHERE name LIKE 'A%';",
+      "expected_sql": "SELECT name FROM customers WHERE name LIKE 'A%' ORDER BY customer_id",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          "Aarav"
+        ],
+        [
+          "Anaya"
+        ]
+      ],
+      "expected_result": [
+        [
+          "Aarav"
+        ],
+        [
+          "Anaya"
+        ]
+      ],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 0.5066
+    },
+    {
+      "id": 48,
+      "question": "Find products with a price exactly equal to 799.",
+      "category": "filtering",
+      "difficulty": "easy",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT name FROM products WHERE price = 799;",
+      "expected_sql": "SELECT name FROM products WHERE price = 799 ORDER BY product_id",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          "Wireless Mouse"
+        ]
+      ],
+      "expected_result": [
+        [
+          "Wireless Mouse"
+        ]
+      ],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 0.3966
+    },
+    {
+      "id": 49,
+      "question": "Find orders whose total item value exceeds 1000.",
+      "category": "aggregation",
+      "difficulty": "hard",
+      "order_matters": false,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT order_id\nFROM order_items\nGROUP BY order_id\nHAVING SUM(unit_price * quantity) > 1000\nORDER BY order_id;",
+      "expected_sql": "SELECT order_id FROM order_items GROUP BY order_id HAVING SUM(quantity * unit_price) > 1000 ORDER BY order_id",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          101
+        ],
+        [
+          102
+        ],
+        [
+          103
+        ],
+        [
+          104
+        ],
+        [
+          105
+        ]
+      ],
+      "expected_result": [
+        [
+          101
+        ],
+        [
+          102
+        ],
+        [
+          103
+        ],
+        [
+          104
+        ],
+        [
+          105
+        ]
+      ],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 0.6711
+    },
+    {
+      "id": 50,
+      "question": "For each category, show the number of products and their average price, sorted by average price from highest to lowest.",
+      "category": "aggregation",
+      "difficulty": "hard",
+      "order_matters": true,
+      "model_name": "openai/gpt-oss-20b",
+      "provider": "groq",
+      "generated_sql": "SELECT category, COUNT(*) AS product_count, AVG(price) AS avg_price\nFROM products\nGROUP BY category\nORDER BY avg_price DESC, category;",
+      "expected_sql": "SELECT category, COUNT(*), AVG(price) FROM products GROUP BY category ORDER BY AVG(price) DESC, category",
+      "generation_succeeded": true,
+      "generated_sql_executed": true,
+      "expected_sql_executed": true,
+      "actual_result": [
+        [
+          "Electronics",
+          3,
+          1699.0
+        ],
+        [
+          "Fashion",
+          2,
+          1299.0
+        ],
+        [
+          "Accessories",
+          2,
+          649.0
+        ],
+        [
+          "Home",
+          1,
+          399.0
+        ]
+      ],
+      "expected_result": [
+        [
+          "Electronics",
+          3,
+          1699.0
+        ],
+        [
+          "Fashion",
+          2,
+          1299.0
+        ],
+        [
+          "Accessories",
+          2,
+          649.0
+        ],
+        [
+          "Home",
+          1,
+          399.0
+        ]
+      ],
+      "passed": true,
+      "failure_type": "PASS",
+      "error": null,
+      "latency_seconds": 1.1221
+    }
+  ]
+}

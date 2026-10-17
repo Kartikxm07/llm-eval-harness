@@ -1,0 +1,35 @@
+============================================================
+       EVALUATION REPORT: groq/openai/gpt-oss-120b
+============================================================
+Provider                : groq
+Timestamp (UTC)         : 2026-10-11T20:05:54.927475+00:00
+Total Planned Cases     : 50
+Completed Cases         : 50
+Passed                  : 41
+Failed                  : 9
+Result Accuracy         : 82.00%
+95% Confidence Interval : [69.2%, 90.23%]
+SQL Execution Rate      : 100.00%
+Generation Success Rate : 100.00%
+------------------------------------------------------------
+Latency Profile (Wall Clock):
+  Mean Latency          : 0.850s
+  Median Latency        : 0.850s
+  P95 Latency           : 0.850s
+  Min / Max Latency     : 0.850s / 0.850s
+------------------------------------------------------------
+Failures by Type:
+  - RESULT_MISMATCH        : 9
+------------------------------------------------------------
+Accuracy by Category:
+  - filtering       : 9/13 (69.23%)
+  - sorting         : 3/5 (60.0%)
+  - aggregation     : 14/17 (82.35%)
+  - joins           : 14/14 (100.0%)
+  - subquery        : 1/1 (100.0%)
+------------------------------------------------------------
+Accuracy by Difficulty:
+  - easy            : 15/20 (75.0%)
+  - medium          : 20/24 (83.33%)
+  - hard            : 6/6 (100.0%)
+============================================================

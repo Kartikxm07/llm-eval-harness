@@ -1,0 +1,250 @@
+{
+  "run_timestamp_utc": "2026-10-11T20:05:54.927475+00:00",
+  "model_a": {
+    "model_name": "openai/gpt-oss-120b",
+    "provider": "groq",
+    "metrics": {
+      "total_planned": 50,
+      "completed_cases": 50,
+      "passed": 41,
+      "failed": 9,
+      "accuracy_percent": 82.0,
+      "sql_execution_success_rate": 100.0,
+      "generation_success_rate": 100.0,
+      "failures_by_type": {
+        "RESULT_MISMATCH": 9
+      },
+      "accuracy_by_category": {
+        "filtering": {
+          "total": 13,
+          "passed": 9,
+          "failed": 4,
+          "accuracy_percent": 69.23
+        },
+        "sorting": {
+          "total": 5,
+          "passed": 3,
+          "failed": 2,
+          "accuracy_percent": 60.0
+        },
+        "aggregation": {
+          "total": 17,
+          "passed": 14,
+          "failed": 3,
+          "accuracy_percent": 82.35
+        },
+        "joins": {
+          "total": 14,
+          "passed": 14,
+          "failed": 0,
+          "accuracy_percent": 100.0
+        },
+        "subquery": {
+          "total": 1,
+          "passed": 1,
+          "failed": 0,
+          "accuracy_percent": 100.0
+        }
+      },
+      "accuracy_by_difficulty": {
+        "easy": {
+          "total": 20,
+          "passed": 15,
+          "failed": 5,
+          "accuracy_percent": 75.0
+        },
+        "medium": {
+          "total": 24,
+          "passed": 20,
+          "failed": 4,
+          "accuracy_percent": 83.33
+        },
+        "hard": {
+          "total": 6,
+          "passed": 6,
+          "failed": 0,
+          "accuracy_percent": 100.0
+        }
+      }
+    },
+    "latency_summary": {
+      "count": 50,
+      "mean_seconds": 0.85,
+      "median_seconds": 0.85,
+      "p90_seconds": 0.85,
+      "p95_seconds": 0.85,
+      "min_seconds": 0.85,
+      "max_seconds": 0.85
+    },
+    "confidence_interval_95": "[69.2%, 90.23%]"
+  },
+  "model_b": {
+    "model_name": "openai/gpt-oss-20b",
+    "provider": "groq",
+    "metrics": {
+      "total_planned": 50,
+      "completed_cases": 50,
+      "passed": 40,
+      "failed": 10,
+      "accuracy_percent": 80.0,
+      "sql_execution_success_rate": 100.0,
+      "generation_success_rate": 100.0,
+      "failures_by_type": {
+        "RESULT_MISMATCH": 10
+      },
+      "accuracy_by_category": {
+        "filtering": {
+          "total": 13,
+          "passed": 9,
+          "failed": 4,
+          "accuracy_percent": 69.23
+        },
+        "sorting": {
+          "total": 5,
+          "passed": 2,
+          "failed": 3,
+          "accuracy_percent": 40.0
+        },
+        "aggregation": {
+          "total": 17,
+          "passed": 15,
+          "failed": 2,
+          "accuracy_percent": 88.24
+        },
+        "joins": {
+          "total": 14,
+          "passed": 14,
+          "failed": 0,
+          "accuracy_percent": 100.0
+        },
+        "subquery": {
+          "total": 1,
+          "passed": 0,
+          "failed": 1,
+          "accuracy_percent": 0.0
+        }
+      },
+      "accuracy_by_difficulty": {
+        "easy": {
+          "total": 20,
+          "passed": 14,
+          "failed": 6,
+          "accuracy_percent": 70.0
+        },
+        "medium": {
+          "total": 24,
+          "passed": 21,
+          "failed": 3,
+          "accuracy_percent": 87.5
+        },
+        "hard": {
+          "total": 6,
+          "passed": 5,
+          "failed": 1,
+          "accuracy_percent": 83.33
+        }
+      }
+    },
+    "latency_summary": {
+      "count": 50,
+      "mean_seconds": 0.7321,
+      "median_seconds": 0.6802,
+      "p90_seconds": 1.1221,
+      "p95_seconds": 1.3945,
+      "min_seconds": 0.2766,
+      "max_seconds": 1.6069
+    },
+    "confidence_interval_95": "[66.96%, 88.76%]"
+  },
+  "comparison_metrics": {
+    "model_a_identifier": "groq/openai/gpt-oss-120b",
+    "model_b_identifier": "groq/openai/gpt-oss-20b",
+    "paired_cases_count": 50,
+    "both_passed_count": 38,
+    "both_failed_count": 7,
+    "model_a_only_passed_count": 3,
+    "model_b_only_passed_count": 2,
+    "agreement_count": 45,
+    "agreement_percent": 90.0,
+    "disagreement_count": 5,
+    "model_a_wins": [
+      3,
+      11,
+      39
+    ],
+    "model_b_wins": [
+      6,
+      43
+    ],
+    "disagreement_details": [
+      {
+        "id": 3,
+        "question": "Find the most expensive product.",
+        "category": "sorting",
+        "difficulty": "easy",
+        "model_a_passed": true,
+        "model_b_passed": false,
+        "model_a_sql": "SELECT name\nFROM products\nORDER BY price DESC, product_id ASC\nLIMIT 1",
+        "model_b_sql": "SELECT name, price FROM products ORDER BY price DESC LIMIT 1;",
+        "model_a_error": null,
+        "model_b_error": "Column count mismatch: got 2 columns, expected 1 columns."
+      },
+      {
+        "id": 11,
+        "question": "List products priced between 500 and 2000 inclusive.",
+        "category": "filtering",
+        "difficulty": "easy",
+        "model_a_passed": true,
+        "model_b_passed": false,
+        "model_a_sql": "SELECT name, price\nFROM products\nWHERE price BETWEEN 500 AND 2000\nORDER BY product_id;",
+        "model_b_sql": "SELECT name FROM products WHERE price BETWEEN 500 AND 2000;",
+        "model_a_error": null,
+        "model_b_error": "Column count mismatch: got 1 columns, expected 2 columns."
+      },
+      {
+        "id": 39,
+        "question": "Find products priced above the average price of all products.",
+        "category": "subquery",
+        "difficulty": "hard",
+        "model_a_passed": true,
+        "model_b_passed": false,
+        "model_a_sql": "SELECT name, price\nFROM products\nWHERE price > (SELECT AVG(price) FROM products)\nORDER BY price DESC, product_id;",
+        "model_b_sql": "SELECT name FROM products WHERE price > (SELECT AVG(price) FROM products);",
+        "model_a_error": null,
+        "model_b_error": "Column count mismatch: got 1 columns, expected 2 columns."
+      },
+      {
+        "id": 6,
+        "question": "Find products with fewer than 30 items in stock.",
+        "category": "filtering",
+        "difficulty": "easy",
+        "model_a_passed": false,
+        "model_b_passed": true,
+        "model_a_sql": "SELECT name, stock FROM products WHERE stock < 30 ORDER BY product_id;",
+        "model_b_sql": "SELECT name FROM products WHERE stock < 30;",
+        "model_a_error": "Column count mismatch: got 2 columns, expected 1 columns.",
+        "model_b_error": null
+      },
+      {
+        "id": 43,
+        "question": "Find cities with more than one registered customer.",
+        "category": "aggregation",
+        "difficulty": "medium",
+        "model_a_passed": false,
+        "model_b_passed": true,
+        "model_a_sql": "SELECT city, COUNT(*) AS customer_count\nFROM customers\nGROUP BY city\nHAVING COUNT(*) > 1;",
+        "model_b_sql": "SELECT city FROM customers GROUP BY city HAVING COUNT(*) > 1",
+        "model_a_error": "Column count mismatch: got 2 columns, expected 1 columns.",
+        "model_b_error": null
+      }
+    ]
+  },
+  "cohens_kappa": 0.6753,
+  "mcnemar_test": {
+    "statistic": 0.0,
+    "discordant_pairs": 5,
+    "p_value_approx": 1.0,
+    "is_statistically_significant": false,
+    "interpretation": "Difference is NOT statistically significant (p ~= 1.0000 >= 0.05). Due to sample size (N=50), performance difference could be random variation."
+  }
+}
