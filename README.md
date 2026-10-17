@@ -1,119 +1,157 @@
-# LLM Evaluation Harness
+# Fair Two-Model LLM SQL Evaluation Harness
 
-A small project to explore how well different large language models (LLMs) turn natural-language questions into SQL queries.
+An enterprise-grade, statistically sound benchmark framework comparing two LLMs (**Model A: 120B parameter** vs **Model B: 20B parameter**) on Natural-Language-to-SQL generation using an identical SQLite e-commerce database and a curated 50-example golden benchmark dataset.
 
-The goal is to build a fair and repeatable way to test two models on the same questions, run their SQL against a sample SQLite database, and compare their results.
+---
 
-> **Status:** Early-stage project — implementation and evaluation are in progress.
-
-## Why this project?
-
-LLMs can generate SQL from everyday questions, but their answers may differ in correctness and reliability. This project aims to compare two models using the same dataset and evaluation process rather than judging them from a few examples.
-
-## Initial Goals
-
-- Connect two LLMs through a common interface.
-- Create a small set of natural-language questions with reference SQL queries.
-- Use a SQLite e-commerce database for testing.
-- Execute generated SQL safely and compare its results with expected results.
-- Record useful metrics such as accuracy, execution success, and response time.
-- Produce a simple report comparing the models.
-
-These are project goals; features will be marked as complete as the project develops.
-
-## Planned Workflow
-
-1. Load a question from the evaluation dataset.
-2. Ask both models to generate a SQL query.
-3. Execute each query against the test database.
-4. Compare the returned results with the reference answer.
-5. Save the results and summarize the differences between the models.
-
-## Tech Stack
-
-- **Python** — main implementation language
-- **SQLite** — sample database
-- **LLM API** — to access the models being evaluated
-- **JSON** — dataset and result storage
-- **unittest** — testing as the project grows
-
-## Getting Started
-
-### 1. Clone the repository
-
-```bash
-git clone <your-repository-url>
-cd <your-repository-folder>
-```
-
-Replace the placeholders with your GitHub repository URL and folder name.
-
-### 2. Create a virtual environment
-
-**Windows PowerShell**
-```powershell
-python -m venv .venv
-.venv\Scripts\Activate.ps1
-```
-
-### 3. Install dependencies
-
-If a `requirements.txt` file is available:
-
-```bash
-pip install -r requirements.txt
-```
-
-### 4. Configure API access
-
-Create a local `.env` file for your API key and model settings. Keep real credentials private and do not commit `.env` to GitHub.
-
-Example configuration:
-
-```env
-GROQ_API_KEY=your_api_key_here
-MODEL_A_NAME=your_first_model
-MODEL_B_NAME=your_second_model
-```
-
-The exact variable names should match the configuration used by the code.
-
-## Evaluation Ideas
-
-The evaluation will focus on:
-
-- **Result accuracy:** whether the generated SQL returns the expected result.
-- **Execution success:** whether the SQL runs without an error.
-- **Latency:** how long each model takes to respond.
-- **Model comparison:** how often the models agree and where their results differ.
-
-Statistical comparisons may be added once the benchmark and results are ready.
-
-## Roadmap
-
-- [ ] Set up the project structure and dependencies
-- [ ] Prepare the SQLite database and evaluation examples
-- [ ] Implement a shared interface for both models
-- [ ] Generate and execute SQL queries
-- [ ] Compare model outputs with reference results
-- [ ] Add evaluation metrics and reports
-- [ ] Test the harness and document findings
-
-## Project Structure
-
-The structure may evolve as development continues.
+## 1. System Architecture
 
 ```text
-llm-evaluation-harness/
-├── data/           # Database and evaluation examples
-├── src/            # Evaluation code
-├── tests/          # Automated tests
-├── results/        # Generated evaluation reports
-├── .env.example    # Example environment configuration
-├── requirements.txt
-└── README.md
+                               +-----------------------------+
+                               |  Natural Language Question  |
+                               +--------------+--------------+
+                                              |
+                     +------------------------+------------------------+
+                     |                                                 |
+                     v                                                 v
+        +--------------------------+                      +--------------------------+
+        |   Model A Adapter        |                      |   Model B Adapter        |
+        |   (openai/gpt-oss-120b)  |                      |   (openai/gpt-oss-20b)   |
+        +------------+-------------+                      +------------+-------------+
+                     |                                                 |
+                     +------------------------+------------------------+
+                                              | (Generated SQL Queries)
+                                              v
+                               +-------------------------------+
+                               |       src/sql_executor        | <--- Read-Only SQLite
+                               |  (mode=ro + C-API Authorizer) |      (data/ecommerce.db)
+                               +--------------+----------------+
+                                              | (Actual Result Rows)
+                                              v
++-----------------------------+ +-------------------------------+
+|   data/golden_dataset.json  | |          src/graders          |
+|    (Reference SQL Query)    | |  (Multiset / Ordered Compare) |
++--------------+--------------+ +--------------+----------------+
+               | (Expected Rows)               |
+               +-------------------------------+
+                               |
+                               v
+                 +---------------------------+
+                 |    src/statistics.py      |
+                 | - Latency Profiling       |
+                 | - McNemar's Paired Test   |
+                 | - Cohen's Kappa Agreement |
+                 | - Wilson Score 95% CIs    |
+                 +-------------+-------------+
+                               |
+                               v
+                 +---------------------------+
+                 |      src/report.py        |
+                 | - model_a_results.json    |
+                 | - model_a_summary.txt     |
+                 | - model_b_results.json    |
+                 | - model_b_summary.txt     |
+                 | - comparison_results.json |
+                 | - comparison_summary.txt  |
+                 +---------------------------+
 ```
 
-## Current Focus
+---
 
-The initial focus is to build a reliable baseline: run the same questions through two models, check their SQL results, and make the comparison easy to reproduce.
+## 2. Project Directory Structure
+
+```text
+eval &harness/
+├── .env                         # API credentials and dual-model configurations
+├── .env.example                 # Environment configuration template
+├── .gitignore                   # Ignores credentials, virtualenvs, cache files
+├── README.md                    # System architecture & operation documentation
+├── requirements.txt             # Python dependencies
+├── data/
+│   ├── ecommerce.db             # Read-only benchmark SQLite database
+│   └── golden_dataset.json      # 50 curated benchmark cases (questions & SQL)
+├── results/
+│   ├── model_a_results.json     # Detailed per-case results for Model A (120B)
+│   ├── model_a_summary.txt      # Human-readable metrics dashboard for Model A
+│   ├── model_b_results.json     # Detailed per-case results for Model B (20B)
+│   ├── model_b_summary.txt      # Human-readable metrics dashboard for Model B
+│   ├── comparison_results.json  # Paired statistical comparison JSON
+│   └── comparison_summary.txt   # Side-by-side terminal & audit comparison
+├── src/
+│   ├── __init__.py              # Package marker
+│   ├── contamination.py         # Benchmark leakage & prompt contamination auditor
+│   ├── database.py              # Schema definition and database seed script
+│   ├── dataset.py               # Dataset loader, structural validator, order inference
+│   ├── graders.py               # Multiset (Counter) & ordered semantic result comparator
+│   ├── llm_judge.py             # Optional qualitative LLM judge for SQL elegance
+│   ├── metrics.py               # Accuracy, execution rate, category & difficulty breakdowns
+│   ├── model.py                 # Common model interface, rate limiting, Groq/OpenAI adapters
+│   ├── rate_limiter.py          # Thread-safe request pacer avoiding 429 rate limits
+│   ├── report.py                # Serializer for single and comparative benchmark reports
+│   ├── retry.py                 # Exponential backoff retry utility for transient errors
+│   ├── runner.py                # Central orchestrator for two-model comparative evaluation
+│   ├── sql_executor.py          # Secure read-only SQLite execution engine with authorizer
+│   └── statistics.py            # Latency distributions, McNemar test, Cohen's kappa, CIs
+└── tests/
+    ├── test_evaluation.py       # 36 unit, security, and regression tests
+    └── test_two_model_comparison.py # 18 tests for model abstraction, stats, and reports
+```
+
+---
+
+## 3. Configuration
+
+Configure `.env` in the project root:
+
+```env
+GROQ_API_KEY=your_actual_groq_api_key
+
+# Model A (120B parameter model)
+MODEL_A_PROVIDER=groq
+MODEL_A_NAME=openai/gpt-oss-120b
+
+# Model B (20B parameter model)
+MODEL_B_PROVIDER=groq
+MODEL_B_NAME=openai/gpt-oss-20b
+```
+
+---
+
+## 4. Execution Commands (PowerShell)
+
+### A. Run Full Offline Test Suite (54 Tests)
+Runs in `< 0.5s` without making any external API calls:
+```powershell
+python -m unittest discover -s tests -v
+```
+
+### B. Validate Database & Dataset Integrity Offline
+```powershell
+python -m src.dataset
+```
+
+### C. Run Quick 3-Case Sanity Check for Both Models
+```powershell
+python -m src.runner --limit 3
+```
+
+### D. Run Full 50-Case Comparative Benchmark
+```powershell
+python -m src.runner
+```
+
+### E. Recreate Comparison Reports Without Re-calling APIs
+```powershell
+python -m src.runner --re-report
+```
+
+---
+
+## 5. Statistical & Evaluation Metrics
+
+1. **Result Accuracy**: % of cases where generated SQL returned rows and columns matching the ground truth.
+2. **SQL Execution Rate**: % of queries that executed without SQLite syntax or runtime errors.
+3. **Wilson Score 95% Confidence Interval**: Realistic binomial accuracy interval given sample size $N=50$.
+4. **Latency Profiling**: Wall-clock response latency (mean, median, p90, p95).
+5. **McNemar's Paired Test**: Hypothesis test evaluating whether the performance difference between Model A and Model B is statistically significant or attributable to random variance on a 50-case sample.
+6. **Cohen's Kappa ($\kappa$)**: Quantifies inter-model agreement beyond chance.
